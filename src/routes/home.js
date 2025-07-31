@@ -1,9 +1,16 @@
 import { Router } from "express";
 
-const routerHome = Router()
+const createHomeRouter = (io) => {
+    const routerHome = Router()
 
-routerHome.get('/', (req, res) => {
-    res.render('home', {})
-})
+    routerHome.post('/apis/products', (req, res) => {
+        res.render('home')
+    })
 
-export default routerHome;
+    io.on('nuevoProdAgregado', (data) => {
+        const contenedor = document.getElementById('resultado');
+        contenedor.innerHTML = `<p>Producto recibido: ${data.nombre} - $${data.precio}</p>`;
+    })
+    return routerHome
+}
+export default createHomeRouter;
