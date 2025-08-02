@@ -6,13 +6,14 @@ const productsPrecio = document.getElementById('precioProd')
 const btnEliminar = document.getElementById('eliminarProd')
 const listProducts = document.getElementById('listProducts')
 
+
 //saco el valor del formulario y lo envio a app.js 
-formProducts.addEventListener('submit', (event) => {
-    event.preventDefault()
+/* formProducts.addEventListener('submit', (e) => {
+    e.preventDefault()
     const inputvalue = productsNombre.value
     const inputPrecio = parseInt(productsPrecio.value)
     socket.emit('msg', inputvalue, inputPrecio)
-})
+}) */
 
 //envio el valor del producto que deseo eliminar
 btnEliminar.addEventListener('click', () => {
@@ -24,15 +25,6 @@ btnEliminar.addEventListener('click', () => {
     }
 });
 
-//envio el valor del input para usarlo en home.js
-formProducts.addEventListener('submit', (event) => {
-    event.preventDefault()
-    const inputvalue = productsNombre.value
-    const inputPrecio = parseInt(productsPrecio.value)
-    socket.emit('prodAgregado', inputvalue, inputPrecio)
-})
-
-
 //socket para mostrar el prod en pantalla
 socket.on('productos', (productos) => {
     listProducts.innerHTML = ''
@@ -43,4 +35,26 @@ socket.on('productos', (productos) => {
     });
 })
 
+//envio el valor del input para mostrarlo en home
+formProducts.addEventListener('submit', (event) => {
+    event.preventDefault()
+    const inputvalue = productsNombre.value
+    const inputPrecio = parseInt(productsPrecio.value)
+    socket.emit('prodAgregado', inputvalue, inputPrecio)
+})
+
+
+socket.on('nuevoProducto', (nuevoProdAgregado) => {
+    const contenedor = document.getElementById('conteiner')
+    if (!contenedor) {
+        console.error('No se encontró el contenedor con id="conteiner"');
+        return;
+    }
+    contenedor.innerHTML = ''
+    nuevoProdAgregado.forEach((productos) => {
+        const li = document.createElement('li')
+        li.textContent = `${productos.nombre} ${productos.precio}`
+        contenedor.appendChild(li)
+    })
+})
 

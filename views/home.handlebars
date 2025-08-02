@@ -1,5 +1,11 @@
-<h2>Vista del producto recibido</h2>
-<div id="resultado"></div>
+<h2>Productos Agregados</h2>
+
+<ul id="conteiner">
+    {{#each nuevoProdAgregado}}
+    <li>{{nombre}} - ${{precio}}</li>
+    {{/each}}
+
+</ul>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/home.js"></script>
+<script src="/index.js"></script>

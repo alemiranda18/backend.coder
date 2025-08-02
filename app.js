@@ -2,7 +2,7 @@ import express from 'express'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import realTimeProducts from './src/routes/realTimeProducts.js'
-import createHomeRouter from './src/routes/home.js'
+import routerHome from './src/routes/home.js'
 
 
 
@@ -13,12 +13,13 @@ const httpServer = app.listen(PORT, () => {
 })
 const io = new Server(httpServer)
 
+app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', handlebars.engine())
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 app.use(express.static('./public'))
 app.use('/', realTimeProducts)
-app.use('/', createHomeRouter(io))
+app.use('/', routerHome)
 
 const productos = [
     { nombre: "Auriculares Bluetooth", precio: 4500 },
@@ -32,7 +33,7 @@ let nuevoProdAgregado = []
 io.on('connection', (socket) => {
     socket.emit('productos', productos)
 
-    //guardo el producto en un array y envio el array actualizado
+    // recibo el valor del form,guardo el producto en array y envio el array actualizado
     socket.on('msg', (nombre, precio) => {
         const nuevoProd = { nombre, precio }
         productos.push(nuevoProd)
@@ -46,7 +47,7 @@ io.on('connection', (socket) => {
             io.emit('productos', productos);
         }
     });
-    //recibo el producto agregado 
+    //recibo el producto agregado  lo guardo en un array  
     socket.on('prodAgregado', (nombre, precio) => {
         const prodAgregado = { nombre, precio }
         nuevoProdAgregado.push(prodAgregado)
