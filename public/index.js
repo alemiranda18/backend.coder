@@ -8,12 +8,12 @@ const listProducts = document.getElementById('listProducts')
 
 
 //saco el valor del formulario y lo envio a app.js 
-/* formProducts.addEventListener('submit', (e) => {
+formProducts.addEventListener('submit', (e) => {
     e.preventDefault()
     const inputvalue = productsNombre.value
     const inputPrecio = parseInt(productsPrecio.value)
     socket.emit('msg', inputvalue, inputPrecio)
-}) */
+})
 
 //envio el valor del producto que deseo eliminar
 btnEliminar.addEventListener('click', () => {
